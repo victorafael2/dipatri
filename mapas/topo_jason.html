@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leitura de arquivo TopoJSON</title>
+</head>
+<body>
+  <input type="file" id="fileInput" accept=".json">
+  <div id="result"></div>
+
+  <script>
+    // Event listener para o input de arquivo
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const conteudoArquivo = e.target.result;
+        const topojsonObj = JSON.parse(conteudoArquivo);
+        const geojson = topojsonObj;
+
+        // Exemplo de visualização do GeoJSON resultante
+        document.getElementById('result').innerText = JSON.stringify(geojson);
+      };
+
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>

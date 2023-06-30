@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Consulta SQL
-$sql = "SELECT *, SUBSTRING(SUBSTRING(teste, 18), 1, CHAR_LENGTH(SUBSTRING(teste, 18)) - 3) as coordenadas FROM poligonos WHERE municipio in ('teresina','amarante','SÃO JOÃO DO PIAUÍ') "; // Substitua sua_tabela e id pelo nome correto
+$sql = "SELECT *, SUBSTRING(SUBSTRING(teste, 18), 1, CHAR_LENGTH(SUBSTRING(teste, 18)) - 3) as coordenadas FROM poligonos WHERE municipio in ('BARRAS') "; // Substitua sua_tabela e id pelo nome correto
 
 $result = $conn->query($sql);
 
