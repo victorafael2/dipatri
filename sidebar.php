@@ -26,7 +26,7 @@
                       <nav class="sb-sidenav-menu-nested nav">
                           <a class="nav-link" href="pages.php?pagina=projeto_bm.php">Pilares I e II</a>
                           <a class="nav-link" href="pages.php?pagina=projeto_pilares.php">Pilares II</a>
-                          <a class="nav-link" href="pages.php?pagina=projeto_pilares.php">Pilares I e II</a>
+                          <a class="nav-link" href="pages.php?pagina=projeto_dpct.php">DPCT</a>
                       </nav>
                   </div>
                   <!-- <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"

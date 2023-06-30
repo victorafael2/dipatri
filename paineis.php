@@ -8,7 +8,8 @@ if ($conn->connect_error) {
 }
 
 // Consulta ao banco de dados
-$sql = "SELECT * FROM paineis";
+$sql = "SELECT * FROM paineis WHERE ativo <> 'nao';
+";
 $result = $conn->query($sql);
 ?>
 
@@ -19,6 +20,7 @@ $result = $conn->query($sql);
   /* Outros estilos para o card */
   width: 300px;
   height: 200px;
+  opacity: 0.5;
 }
 
 
@@ -47,7 +49,7 @@ $result = $conn->query($sql);
                             // Início do card
                             echo '<div class="col-md-3">';
                             echo '<a class="nav-link" href="pages.php?pagina=' . $link . '">';
-                            echo '<div class="card w-100 mb-2" style="background-image: url(' . $image . ');">';
+                            echo '<div class="card w-100 border-secondary mb-2" style="background-image: url(' . $image . ');">';
                             echo '<div class="card-body">';
                             echo '<h5 class="card-title">' . $title . '</h5>';
                             echo '<p class="card-text">' . $description . '</p>';
@@ -69,7 +71,7 @@ $result = $conn->query($sql);
             </div>
             <div class="row border-bottom">
 
-            teste
+            <!-- teste -->
             </div>
         </div>
     </main>
