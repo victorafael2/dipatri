@@ -1,0 +1,17 @@
+{
+    "name": "interpi/dipatri",
+    "autoload": {
+        "psr-4": {
+            "Interpi\\Dipatri\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Victor Rafael de Oliveira Silva",
+            "email": "106404461+victorafael2@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^2.15"
+    }
+}

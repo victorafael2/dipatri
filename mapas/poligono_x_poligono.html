@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapa com Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Cria o mapa e define a localização inicial
+        var map = L.map('map').setView([-4.239, -42.568], 14);
+
+        // Adiciona o tile layer (camada de visualização do mapa)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Coordenadas dos polígonos
+        var polygons = [
+            {
+                coordinates: [ // Coordenadas do primeiro polígono
+                    [-4.23678110999999991, -42.56750917000000101],
+                    [-4.23810638999999956, -42.56674833000000291],
+                    [-4.24185861000000042, -42.56472500000000281],
+                    // ...
+                ],
+                color: 'red', // Cor do primeiro polígono
+                zIndex: 1 // Valor do zIndex do primeiro polígono
+            },
+            {
+                coordinates: [ // Coordenadas do segundo polígono
+                    [-4.238000, -42.572500],
+                    [-4.238300, -42.572400],
+                    [-4.238500, -42.572700],
+                    // ...
+                ],
+                color: 'blue', // Cor do segundo polígono
+                zIndex: 2 // Valor do zIndex do segundo polígono
+            }
+        ];
+
+        // Percorre os polígonos e cria cada um no mapa
+        for (var i = 0; i < polygons.length; i++) {
+            var polygon = L.polygon(polygons[i].coordinates, { color: polygons[i].color }).addTo(map);
+
+            // Define o zIndex do polígono
+            polygon.setZIndex(polygons[i].zIndex);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapa com Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Cria o mapa e define a localização inicial
+        var map = L.map('map').setView([-4.239, -42.568], 14);
+
+        // Adiciona o tile layer (camada de visualização do mapa)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Coordenadas dos polígonos
+        var polygons = [
+            {
+                coordinates: [ // Coordenadas do primeiro polígono
+                    [-4.23678110999999991, -42.56750917000000101],
+                    [-4.23810638999999956, -42.56674833000000291],
+                    [-4.24185861000000042, -42.56472500000000281],
+                    // ...
+                ],
+                name: "Polígono 1" // Nome do primeiro polígono
+            },
+            {
+                coordinates: [ // Coordenadas do segundo polígono
+                    [-4.238000, -42.572500],
+                    [-4.238300, -42.572400],
+                    [-4.238500, -42.572700],
+                    // ...
+                ],
+                name: "Polígono 2" // Nome do segundo polígono
+            },
+            {
+                coordinates: [ // Coordenadas do terceiro polígono
+                    [-4.239300, -42.572600],
+                    [-4.239400, -42.572900],
+                    [-4.239200, -42.573000],
+                    // ...
+                ],
+                name: "Polígono 3" // Nome do terceiro polígono
+            }
+        ];
+
+        // Percorre os polígonos e cria cada um no mapa
+        for (var i = 0; i < polygons.length; i++) {
+            var polygon = L.polygon(polygons[i].coordinates, { color: 'red' }).addTo(map);
+
+            // Adiciona o pop-up com o nome do polígono
+            polygon.bindPopup(polygons[i].name);
+        }
+    </script>
+</body>
+</html>

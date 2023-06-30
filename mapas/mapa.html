@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapa com Leaflet.js</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Cria o mapa e define a localização inicial
+        var map = L.map('map').setView([-3.7474, -38.5192], 12);
+
+        // Adiciona o tile layer (camada de visualização do mapa)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        // Array com as coordenadas dos pontos
+        var coordinates = [
+            [-3.7474, -38.5192], // Fortaleza
+            [-3.7319, -38.5267], // Praia de Iracema
+            [-3.7543, -38.5383], // Dragão do Mar
+            [-3.7411, -38.5047]  // Beira Mar
+        ];
+
+        // Itera sobre as coordenadas para criar os marcadores
+        for (var i = 0; i < coordinates.length; i++) {
+            var marker = L.marker(coordinates[i]).addTo(map);
+            marker.bindPopup("<b>Local " + (i + 1) + "</b><br>Coordenadas: " + coordinates[i]).openPopup();
+        }
+    </script>
+</body>
+</html>
