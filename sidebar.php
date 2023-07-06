@@ -23,7 +23,7 @@ if (isset($_GET['logout'])) {
     // Limpe a sessão
     session_destroy();
     // Redirecione para a página de login
-    header('Location: index_2.php');
+    header('Location: index.php');
     exit();
 }
 
