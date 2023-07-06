@@ -1,5 +1,6 @@
   <?php
 // Inclua o autoload do Composer
+session_start();
 require_once 'vendor/autoload.php';
 
 // Configure as credenciais do Google
@@ -47,14 +48,14 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $userEmail = $userInfo->getEmail();
 
     // Exiba as informações do usuário
-    echo 'Usuário autenticado:';
-    echo 'ID do usuário: ' . $userId . '<br>';
-    echo 'Email do usuário: ' . $userEmail . '<br>';
-    echo '<a href="?logout">Logout</a>';
+    // echo 'Usuário autenticado:';
+    // echo 'ID do usuário: ' . $userId . '<br>';
+    // echo 'Email do usuário: ' . $userEmail . '<br>';
+    // echo '<a href="?logout">Logout</a>';
 } else {
     // O usuário não está autenticado, exiba o link de login do Google
     $authUrl = $client->createAuthUrl();
-    echo '<a href="' . $authUrl . '">Login com o Google</a>';
+    // echo '<a href="' . $authUrl . '">Login com o Google</a>';
 }
 
 
@@ -141,7 +142,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
           <div class="sb-sidenav-footer">
               <!-- <div class="small"><a href="index_2.php">Logar</a></div> -->
 
-              <div class="small"><a href="index_2.php"><?php $userEmail ?></a></div>
+              <div class="small"><a href="index_2.php"><?php echo $userEmail ?></a></div>
 
 
 
