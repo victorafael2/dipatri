@@ -3,10 +3,10 @@
           <div class="sb-sidenav-menu">
               <div class="nav">
                   <!-- <div class="sb-sidenav-menu-heading">Core</div> -->
-                  <!-- <a class="nav-link" href="matriculas.php">
-                      <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                      Matriculas
-                  </a> -->
+                  <a class="nav-link" href="matriculas.php">
+                      <div class="sb-nav-link-icon"><i class="fa-regular fa-rectangle-list"></i></i></div>
+                      Matrículas
+                  </a>
 
                   <!-- <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                       data-bs-parent="#sidenavAccordion">

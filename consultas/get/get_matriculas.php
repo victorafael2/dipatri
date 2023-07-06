@@ -7,17 +7,27 @@ if ($conn->connect_error) {
     die("Erro na conexão com o banco de dados: " . $conn->connect_error);
 }
 
-$municipio = isset($_GET['municipio']) ? implode(',', $_GET['municipio']) : '';
+$municipios = isset($_GET['municipio']) ? $_GET['municipio'] : array();
+
+$municipioString = implode(', ', array_map(function($municipio) {
+    return '"' . $municipio . '"';
+}, $municipios));
+
+// echo $municipioString;
 
 
-$municipio = isset($_GET['propriedade']) ? implode(',', $_GET['propriedade']) : '';
+
+
+
+
 
 
 
 // Consulta ao banco de dados
 // Consulta ao banco de dados
 // $sql = "SELECT * FROM matriculas where municipio in ('$municipio') and propriedade in ('$propriedade')";
-$sql = "SELECT * FROM matriculas where municipio in  ('$municipio') limit 500";
+$sql = "SELECT * FROM matriculas where municipio in  ($municipioString) ";
+// echo $sql;
 $result = $conn->query($sql);
 
 // echo $sql;

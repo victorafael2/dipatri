@@ -1,36 +1,24 @@
-
 <?php
-
 $municipios = $_POST['municipio']; // Obtém os valores selecionados do campo múltiplo
-$municipiostring = http_build_query(['municipio' => $municipios]);
 
-
-
-
-
-
-
-if (empty($_POST['propriedade'])) {
-    $propriedade = "SITIO SESMARIA CAMPOS";
-} else {
-    $propriedade = $_POST['propriedade'];
+$queryParams = [];
+foreach ($municipios as $municipio) {
+    $municipio = urlencode($municipio);
+    $queryParams[] = 'municipio[]=' . $municipio;
 }
-// $tipo = $_POST['tipo'];
-// $matricula = $_POST['matricula'];
-$propriedadestring = http_build_query(['propriedades' => $propriedade]);
 
-$url = 'consultas/get/get_matriculas.php?' . $municipiostring .'&&'. $propriedadestring;
-echo $url;
+$queryString = implode('&', $queryParams); // Concatena os parâmetros da string de consulta usando '&'
+
+$url_link = 'consultas/get/get_matriculas.php?' . $queryString; // Concatena a string de consulta com a URL base
+
+// echo $url_link; // Exibe a URL completa com a string de consulta
 ?>
 
 
 
-
-
-
-
-<table id="tabela" data-toggle="table" data-filter-control="true" data-show-search-clear-button="true"
-    data-url="<?php echo $response ?>&&propriedade=<?php echo $propriedade ?>" data-pagination="true" class="table table-sm table-borderless ">
+<table id="table" data-toggle="table" data-show-export="true" data-show-button-icons="true" data-show-button-text="true" data-pagination="true" data-click-to-select="true"  data-locale="pt-BR"
+   data-show-toggle="false" data-show-columns="false" data-export-data-type="all" data-export-file-name="Matriculas" data-url="<?php echo $url_link ?>"
+    class="table table-sm table-borderless fs--3">
     <thead>
         <tr>
             <th data-field="id">ID</th>
@@ -44,22 +32,27 @@ echo $url;
 
 
 
+<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/tableExport.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.10.21/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table/dist/locale/bootstrap-table-pt-BR.min.js"></script>
 
-<script src="https://unpkg.com/bootstrap-table@1.22.0/dist/bootstrap-table.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table-draggable/1.0.0/bootstrap-table-draggable.min.js">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/tablednd@1.0.5/dist/jquery.tablednd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/locale/bootstrap-table-pt-BR.min.js">
-</script>
-<script src="https://unpkg.com/bootstrap-table@1.22.0/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js">
-</script>
-<script
-    src="https://unpkg.com/bootstrap-table@1.22.0/dist/extensions/filter-control/bootstrap-table-filter-control.min.js">
-</script>
-<script src="https://unpkg.com/bootstrap-table@1.22.0/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js">
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/tablednd@1.0.5/dist/jquery.tablednd.min.js"></script>
+<!-- <script>
+$(document).ready(function() {
+  $('#table').bootstrapTable({
+    exportOptions: {
+      fileName: 'Matriculas',
+      ignoreColumn: [0] // Ignora a coluna de índice
+    },
+    toolbar: '#toolbar',
+    showExport: true,
+    exportTypes: ['excel']
+  });
+});
+</script> -->
 
-<script src="https://unpkg.com/bootstrap-table@1.22.0/dist/extensions/reorder-rows/bootstrap-table-reorder-rows.min.js">
-</script>
+
