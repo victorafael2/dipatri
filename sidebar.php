@@ -55,7 +55,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
 } else {
     // O usuário não está autenticado, exiba o link de login do Google
     $authUrl = $client->createAuthUrl();
-    // echo '<a href="' . $authUrl . '">Login com o Google</a>';
+    $id_login = '<a href="' . $authUrl . '">Login com o Google</a>';
 }
 
 
@@ -143,6 +143,8 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
               <!-- <div class="small"><a href="index_2.php">Logar</a></div> -->
 
               <div class="small"><a href="index_2.php"><?php echo $userEmail ?></a></div>
+              <div class="small"><a href="index_2.php"><?php echo $id_login ?></a></div>
+
 
 
 
