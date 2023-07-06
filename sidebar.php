@@ -78,20 +78,7 @@
 
               <div class="small"><a href="index_2.php">Logar</a></div>
 
-              <?php
-              // Crie um serviço Google API para obter informações do usuário
-    $oauth = new \Google_Service_Oauth2($client);
-    $userInfo = $oauth->userinfo->get();
-    $userId = $userInfo->getId();
-    $userEmail = $userInfo->getEmail();
 
-    // Exiba as informações do usuário
-    echo 'Usuário autenticado:';
-    echo 'ID do usuário: ' . $userId . '<br>';
-    echo 'Email do usuário: ' . $userEmail . '<br>';
-    echo '<a href="?logout">Logout</a>';
-
-              ?>
 
           </div>
       </nav>
