@@ -76,6 +76,8 @@
           <div class="sb-sidenav-footer">
               <div class="small"><a href="index_2.php">Logar</a></div>
 
+              <div class="small"><a href="index_2.php">Logar</a></div>
+
           </div>
       </nav>
   </div>
