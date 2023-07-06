@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 // Configure as credenciais do Google
 $clientId = '937469059904-j4009pav3dl03q5cugi8f1sgm1h9m80q.apps.googleusercontent.com';
 $clientSecret = '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';
-$redirectUri = 'https://dipatri.cloud/index_2.php';
+$redirectUri = 'https://dipatri.cloud/index.php';
 
 // Crie uma instância do cliente Google_Client
 $client = new Google_Client();
@@ -22,7 +22,7 @@ if (isset($_GET['logout'])) {
     // Limpe a sessão
     session_destroy();
     // Redirecione para a página de login
-    header('Location: index.php');
+    header('Location: index_2.php');
     exit();
 }
 
