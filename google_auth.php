@@ -1,33 +1,58 @@
 <?php
-require_once 'vendor/autoload.php'; // Caminho para o arquivo de autoload gerado pelo Composer
+// Inclua o autoload do Composer
+require_once 'vendor/autoload.php';
 
-// Configurações da autenticação
+// Configure as credenciais do Google
+$clientId = '937469059904-j4009pav3dl03q5cugi8f1sgm1h9m80q.apps.googleusercontent.com';
+$clientSecret = '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';
+$redirectUri = 'https://dipatri.cloud/index_2.php';
+
+// Crie uma instância do cliente Google_Client
 $client = new Google_Client();
-$client->setClientId('937469059904-j4009pav3dl03q5cugi8f1sgm1h9m80q.apps.googleusercontent.com');
-$client->setClientSecret('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');
-$client->setRedirectUri('https://dipatri.cloud/redirect');
-$client->addScope('email'); // Escopo de acesso, você pode adicionar mais escopos conforme necessário
+$client->setClientId($clientId);
+$client->setClientSecret($clientSecret);
+$client->setRedirectUri($redirectUri);
+$client->addScope('email');
+$client->addScope('profile');
 
-// Verifica se já há um token de acesso válido
-if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-    $client->setAccessToken($_SESSION['access_token']);
-} else {
-    // Não há token, então redireciona para a tela de autenticação do Google
-    $authUrl = $client->createAuthUrl();
-    header('Location: ' . $authUrl);
+// Verifique se a ação de logout foi solicitada
+if (isset($_GET['logout'])) {
+    // Revoke the token de acesso
+    $client->revokeToken($_SESSION['access_token']);
+    // Limpe a sessão
+    session_destroy();
+    // Redirecione para a página de login
+    header('Location: index.php');
     exit();
 }
 
-// Verifica se o código de autorização foi retornado
-if (isset($_GET['code'])) {
-    // Troca o código de autorização por um token de acesso
-    $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-    $client->setAccessToken($accessToken);
+// Verifique se o usuário já está autenticado
+if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+    // Configurar o token de acesso no cliente
+    $client->setAccessToken($_SESSION['access_token']);
 
-    // Salva o token de acesso na sessão para uso posterior
-    $_SESSION['access_token'] = $accessToken;
+    // Verifique se o token de acesso expirou
+    if ($client->isAccessTokenExpired()) {
+        // Renove o token de acesso usando o token de atualização (refresh token)
+        $refreshToken = $_SESSION['refresh_token'];
+        $client->fetchAccessTokenWithRefreshToken($refreshToken);
+        // Atualize o token de acesso na sessão
+        $_SESSION['access_token'] = $client->getAccessToken();
+    }
 
-    // Redireciona para a página principal da sua aplicação
-    header('Location: index.php');
-    exit();
+    // Crie um serviço Google API para obter informações do usuário
+    $oauth = new \Google_Service_Oauth2($client);
+    $userInfo = $oauth->userinfo->get();
+    $userId = $userInfo->getId();
+    $userEmail = $userInfo->getEmail();
+
+    // Exiba as informações do usuário
+    echo 'Usuário autenticado:';
+    echo 'ID do usuário: ' . $userId . '<br>';
+    echo 'Email do usuário: ' . $userEmail . '<br>';
+    echo '<a href="?logout">Logout</a>';
+} else {
+    // O usuário não está autenticado, exiba o link de login do Google
+    $authUrl = $client->createAuthUrl();
+    echo '<a href="' . $authUrl . '">Login com o Google</a>';
 }
