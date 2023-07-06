@@ -14,11 +14,16 @@ $url_link = 'consultas/get/get_matriculas.php?' . $queryString; // Concatena a s
 // echo $url_link; // Exibe a URL completa com a string de consulta
 ?>
 
+<style>
+    .custom-table {
+        font-size: 12px; /* Defina o tamanho de fonte desejado */
+    }
+</style>
 
 
 <table id="table" data-toggle="table" data-show-export="true" data-show-button-icons="true" data-show-button-text="true" data-pagination="true" data-click-to-select="true"  data-locale="pt-BR"
    data-show-toggle="false" data-show-columns="false" data-export-data-type="all" data-export-file-name="Matriculas" data-url="<?php echo $url_link ?>"
-    class="table table-sm table-borderless fs--3">
+   class="table table-sm table-borderless fs--3 table-striped rounded custom-table">
     <thead>
         <tr>
             <th data-field="id">ID</th>

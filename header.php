@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://s2-g1.glbimg.com/MApfQR_5mIrwW6QgZvSS0L9Rwtk=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2023/Y/j/SPWn0AR4qG91WIj3Bp6g/marca-pi.jpg">
     <link rel="shortcut icon" type="image/x-icon" href="https://s2-g1.glbimg.com/MApfQR_5mIrwW6QgZvSS0L9Rwtk=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2023/Y/j/SPWn0AR4qG91WIj3Bp6g/marca-pi.jpg">
     <title>Dashboard - Dipatri</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" /> -->
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
