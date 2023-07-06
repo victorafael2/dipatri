@@ -139,7 +139,7 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
               </div>
           </div>
           <div class="sb-sidenav-footer">
-              <div class="small"><a href="index_2.php">Logar</a></div>
+              <!-- <div class="small"><a href="index_2.php">Logar</a></div> -->
 
               <div class="small"><a href="index_2.php"><?php $userEmail ?></a></div>
 
