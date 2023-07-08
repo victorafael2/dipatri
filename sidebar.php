@@ -1,66 +1,40 @@
-  <?php
-// Inclua o autoload do Composer
-session_start();
-require_once 'vendor/autoload.php';
+<?php
+// Configurações de conexão com o banco de dados
+include 'database/databaseconnect.php';
 
-// Configure as credenciais do Google
-$clientId = '937469059904-j4009pav3dl03q5cugi8f1sgm1h9m80q.apps.googleusercontent.com';
-$clientSecret = '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';
-$redirectUri = 'https://dipatri.cloud/index.php';
-
-// Crie uma instância do cliente Google_Client
-$client = new Google_Client();
-$client->setClientId($clientId);
-$client->setClientSecret($clientSecret);
-$client->setRedirectUri($redirectUri);
-$client->addScope('email');
-$client->addScope('profile');
-
-// Verifique se a ação de logout foi solicitada
-if (isset($_GET['logout'])) {
-    // Revoke the token de acesso
-    $client->revokeToken($_SESSION['access_token']);
-    // Limpe a sessão
-    session_destroy();
-    // Redirecione para a página de login
-    header('Location: index.php');
-    exit();
+// Verifica se houve erro na conexão
+if ($conn->connect_error) {
+    die('Erro na conexão com o banco de dados: ' . $conn->connect_error);
 }
 
-  // Verifique se o usuário já está autenticado
-if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
-    // Configurar o token de acesso no cliente
-    $client->setAccessToken($_SESSION['access_token']);
+// Verifica se a variável de sessão está configurada
+if (isset($_SESSION['email'])) {
+    // Obtém o email do usuário logado
+    $email = $_SESSION['email'];
 
-    // Verifique se o token de acesso expirou
-    if ($client->isAccessTokenExpired()) {
-        // Renove o token de acesso usando o token de atualização (refresh token)
-        $refreshToken = $_SESSION['refresh_token'];
-        $client->fetchAccessTokenWithRefreshToken($refreshToken);
-        // Atualize o token de acesso na sessão
-        $_SESSION['access_token'] = $client->getAccessToken();
+    // Consulta SQL para buscar o nome relacionado ao email
+    $sql = "SELECT nome FROM usuarios WHERE email = '$email'";
+    $resultado = $conn->query($sql);
+
+    // Verifica se a consulta retornou algum resultado
+    if ($resultado && $resultado->num_rows === 1) {
+        $registro = $resultado->fetch_assoc();
+        $nome = $registro['nome'];
+
+        // Exibe o nome na página
+        $logado = 'Logado como: ' . $nome;
+    } else {
+        $logado = 'Usuário não encontrado.';
     }
-
-    // Crie um serviço Google API para obter informações do usuário
-    $oauth = new \Google_Service_Oauth2($client);
-    $userInfo = $oauth->userinfo->get();
-    $userId = $userInfo->getId();
-    $userEmail = $userInfo->getEmail();
-
-    // Exiba as informações do usuário
-    // echo 'Usuário autenticado:';
-    // echo 'ID do usuário: ' . $userId . '<br>';
-    // echo 'Email do usuário: ' . $userEmail . '<br>';
-    // echo '<a href="?logout">Logout</a>';
 } else {
-    // O usuário não está autenticado, exiba o link de login do Google
-    $authUrl = $client->createAuthUrl();
-    $id_login = '<a href="' . $authUrl . '">Login com o Google</a>';
+    $logado = 'Usuário não está logado.';
 }
 
 
+// Fecha a conexão com o banco de dados
+// $conn->close();
+?>
 
-  ?>
 
 
 
@@ -95,61 +69,26 @@ if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
                           <a class="nav-link" href="pages.php?pagina=projeto_dpct.php">DPCT</a>
                       </nav>
                   </div>
-                  <!-- <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                      data-bs-parent="#sidenavAccordion">
-                      <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                              data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                              aria-controls="pagesCollapseAuth">
-                              Authentication
-                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                          </a>
-                          <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
-                              data-bs-parent="#sidenavAccordionPages">
-                              <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="login.html">Login</a>
-                                  <a class="nav-link" href="register.html">Register</a>
-                                  <a class="nav-link" href="password.html">Forgot Password</a>
-                              </nav>
-                          </div>
-                          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                              data-bs-target="#pagesCollapseError" aria-expanded="false"
-                              aria-controls="pagesCollapseError">
-                              Error
-                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                          </a>
-                          <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
-                              data-bs-parent="#sidenavAccordionPages">
-                              <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="401.html">401 Page</a>
-                                  <a class="nav-link" href="404.html">404 Page</a>
-                                  <a class="nav-link" href="500.html">500 Page</a>
-                              </nav>
-                          </div>
-                      </nav>
-                  </div> -->
-                  <!-- <div class="sb-sidenav-menu-heading">Addons</div>
-                  <a class="nav-link" href="charts.html">
-                      <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                      Charts
-                  </a>
-                  <a class="nav-link" href="tables.html">
-                      <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                      Tables
-                  </a> -->
+
               </div>
           </div>
           <div class="sb-sidenav-footer">
-              <!-- <div class="small"><a href="index_2.php">Logar</a></div> -->
+          <p ><small>
+            <?php echo $logado ?>
+            </small>
+          </p>
+            <?php if (isset($_SESSION['email'])) { ?>
+    <div class="btn-group btn-group-sm">
+        <a href="<?php echo $linkUrl; ?>" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-right-from-bracket"></i> <?php echo $linkText; ?></a>
+    </div>
+<?php } else { ?>
+    <div class="btn-group btn-group-sm">
+        <a href="<?php echo $linkUrl; ?>" class="btn btn-outline-success "><i class="fa-solid fa-user-plus"></i> <?php echo $linkText; ?></a>
+        <a href="login.php" class="btn btn-success"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
+    </div>
+<?php } ?>
 
-              <div class="small"><a href="index_2.php"><?php echo $userEmail ?></a></div>
-              <div class="small"><a href="index_2.php"><?php echo $id_login ?></a></div>
+</div>
 
-
-
-
-
-
-          </div>
       </nav>
   </div>

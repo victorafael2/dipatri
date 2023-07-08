@@ -16,10 +16,36 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <!-- <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li> -->
+
+
+                                                        <?php
+                                // Consulta SQL para obter os itens do banco de dados
+                                $sql = "SELECT nome,nome_arquivo FROM adm";
+                                $resultado = $conn->query($sql);
+
+                                // Verifica se há resultados
+                                if ($resultado->num_rows > 0) {
+                                    // Início do menu dropdown
+
+
+                                    // Loop sobre os resultados
+                                    while ($row = $resultado->fetch_assoc()) {
+                                        $id = $row['nome_arquivo'];
+                                        $nome = $row['nome'];
+                                        echo '<li><a class="dropdown-item" href="pages.php?pagina=' . $id . '">' . $nome . '</a></li>';
+                                    }
+
+
+                                }
+                                ?>
+
+
+
+
+                        <!-- <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li> -->
                     </ul>
                 </li>
             </ul>

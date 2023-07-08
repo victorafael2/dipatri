@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "45.152.44.103",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "DIPATRI",
+            "group": "MEUS",
+            "database": "u358437276_dipatri_produc",
+            "username": "u358437276_victor",
+            "password": "Vr88094852"
+        }
+    ]
+}

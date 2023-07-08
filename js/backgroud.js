@@ -40,7 +40,7 @@ var images = [
     currentIndex = (currentIndex + 1) % images.length;
 
     // Define o tempo de espera entre as imagens (em milissegundos)
-    setTimeout(fadeOut, 1000);
+    setTimeout(fadeOut, 10000);
   }
 
   function changeImage() {

@@ -1,5 +1,28 @@
-<?php include 'database/databaseconnect.php'?>
+<?php
+// Inicia a sessão
+session_start();
 
+include 'database/databaseconnect.php';
+
+// Verifica se a variável de sessão está definida (supondo que você defina uma variável chamada $_SESSION['logged_in'] ao fazer o login)
+if (isset($_SESSION['email'])) {
+    $linkText = 'Logout';
+    $linkUrl = 'database/logout.php'; // Insira o URL do script de logout aqui
+} else {
+    $linkText = 'Cadastrar';
+    $linkUrl = 'cadastro.php'; // Insira o URL da página de cadastro aqui
+}
+
+if (isset($_SESSION['email'])) {
+    // Obtém o email da sessão
+    $email = $_SESSION['email'];
+
+    // Faça o que precisar com o email...
+} else {
+    // O email não está armazenado na sessão, pode ser necessário redirecionar para a página de login
+    $email = 'Convidado';
+}
+?>
 
 
 
