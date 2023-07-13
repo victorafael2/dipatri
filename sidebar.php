@@ -48,6 +48,11 @@ if (isset($_SESSION['email'])) {
                       Matrículas
                   </a>
 
+                  <a class="nav-link" href="cartorios.php">
+                      <div class="sb-nav-link-icon"><i class="fa-solid fa-stamp"></i></div>
+                      Cartórios
+                  </a>
+
                   <!-- <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                       data-bs-parent="#sidenavAccordion">
                       <nav class="sb-sidenav-menu-nested nav">
