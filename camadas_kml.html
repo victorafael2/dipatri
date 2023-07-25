@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa KML</title>
+  <!-- Inclua a folha de estilos do Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+  <!-- Contêiner para exibir o mapa -->
+  <div id="map" style="height: 500px;"></div>
+
+  <!-- Inclua o script do Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <!-- Inclua a biblioteca leaflet-omnivore para carregar o KML -->
+  <script src="https://unpkg.com/leaflet-omnivore@0.10.0/leaflet-omnivore.min.js"></script>
+</body>
+</html>
+
+<script>
+  // Função para carregar o arquivo KML e exibir o mapa
+  function initMap() {
+    // Coordenadas iniciais do mapa - por exemplo, coordenadas de Recife, PE, Brasil
+    const initialCoords = [-8.05428, -34.8813];
+
+    // Crie o mapa e defina a exibição inicial
+    const map = L.map('map').setView(initialCoords, 10); // O "10" é o nível de zoom inicial
+
+    // Adicione um provedor de mapa (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Carregue o arquivo KML
+    fetch('/kml/PE CAMPESTRE.kml')
+      .then((response) => response.text())
+      .then((kmlText) => {
+        // Converta o KML em uma camada do Leaflet
+        const kmlLayer = new L.KML(kmlText);
+
+        // Adicione a camada KML ao mapa
+        kmlLayer.addTo(map);
+
+        // Ajuste o zoom e o centro do mapa para abranger todas as camadas KML
+        map.fitBounds(kmlLayer.getBounds());
+      })
+      .catch((error) => {
+        console.error('Erro ao carregar o arquivo KML:', error);
+      });
+  }
+
+  // Chame a função de inicialização do mapa assim que a página for carregada
+  document.addEventListener('DOMContentLoaded', initMap);
+</script>
