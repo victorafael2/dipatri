@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa com Polígonos (Lazy Loading)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+  <div id="map" style="height: 500px;"></div>
+  <div id="layerControl" class="leaflet-control-layers"></div>
+  <div id="municipioList">
+    <h2>Municípios e Comunidades</h2>
+    <p id="recordCount">Quantidade de Registros: 0</p>
+    <ul></ul>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const map = L.map('map').setView([-8.22534417, -42.53591972], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+      const layerControl = L.control.layers(null, null, { collapsed: false }).addTo(map);
+      const typeLayerGroups = {};
+      const municipioList = document.querySelector('#municipioList ul');
+      const recordCountElement = document.getElementById('recordCount');
+
+      let data;
+      let polygonLayers = [];
+
+      // Função para carregar polígonos dentro dos limites do mapa
+      async function loadPolygonsInBounds() {
+        const bounds = map.getBounds();
+        const response = await fetch('kml/get_quilombos.php');
+        data = await response.json();
+
+        // Filtrar os polígonos que estão dentro dos limites do mapa
+        const polygonsInBounds = data.filter(polygon => {
+          const coords = polygon.geometry.coordinates[0][0]; // Pegar uma coordenada do polígono
+          const latLng = L.latLng(coords[1], coords[0]); // Criar um objeto LatLng
+
+          return bounds.contains(latLng); // Verificar se a coordenada está dentro dos limites
+        });
+
+        updateRecordCount();
+
+        polygonsInBounds.forEach(polygon => {
+          const type = polygon.properties.tipo;
+
+          if (!typeLayerGroups[type]) {
+            typeLayerGroups[type] = L.layerGroup();
+            layerControl.addOverlay(typeLayerGroups[type], type);
+          }
+
+          // Restante do código para adicionar os polígonos e listas
+
+          const polygonLayer = L.geoJSON(polygon, {
+            style: polygonStyle,
+            onEachFeature: function(feature, layer) {
+              layer.bindPopup(popupContent);
+            }
+          });
+
+          polygonLayers.push(polygonLayer);
+          typeLayerGroups[type].addLayer(polygonLayer);
+
+          const municipio = polygon.properties.nm_municip;
+          const comunidade = polygon.properties.nm_comunid;
+          const listItem = document.createElement('li');
+          listItem.textContent = `${municipio} - ${comunidade}`;
+          municipioList.appendChild(listItem);
+
+          listItem.addEventListener('click', () => {
+            map.fitBounds(polygonLayer.getBounds());
+          });
+        });
+      }
+
+      map.on('moveend', loadPolygonsInBounds); // Chamar a função quando o mapa é movido
+
+      function updateRecordCount() {
+        recordCountElement.textContent = `Quantidade de Registros: ${data.length}`;
+      }
+    });
+  </script>
+</body>
+</html>
