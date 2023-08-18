@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa com Leaflet e KML</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-omnivore/0.4.1/leaflet-omnivore.min.js"></script>
+
+</head>
+<body>
+    <div id="map" style="width: 100%; height: 600px;"></div>
+    <script>
+$(document).ready(function () {
+    // Crie um mapa com coordenadas iniciais no Piauí, Brasil
+    var map = L.map('map').setView([-7.0, -41.5], 7);
+
+    // Adicione um tile layer do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Carregue o arquivo KML usando o plugin omnivore
+    $.getScript('https://cdnjs.cloudflare.com/ajax/libs/leaflet-omnivore/0.4.1/leaflet-omnivore.min.js', function () {
+        omnivore.kml('quilombolas.json', null, L.geoJson(null, {
+            onEachFeature: function (feature, layer) {
+                // Ação a ser tomada para cada recurso (Placemark)
+                var popupContent = '<h3>' + feature.properties.name + '</h3>' +
+                                   '<p><strong>Município:</strong> ' + feature.properties.nm_municip + '</p>' +
+                                   '<p><strong>Área (ha):</strong> ' + feature.properties.nr_area_ha + '</p>';
+                layer.bindPopup(popupContent);
+            }
+        })).addTo(map);
+    });
+});
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa com Polígonos</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+  <div id="map" style="height: 500px;"></div>
+  <div id="layerControl" class="leaflet-control-layers"></div>
+
+  <div id="municipioList">
+    <h2>Municípios e Comunidades</h2>
+    <p id="recordCount">Quantidade de Registros: 0</p>
+    <ul></ul>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const map = L.map('map').setView([-8.22534417, -42.53591972], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+      const layerControl = L.control.layers(null, null, { collapsed: false }).addTo(map);
+      const typeLayerGroups = {};
+      const municipioList = document.querySelector('#municipioList ul');
+      const recordCountElement = document.getElementById('recordCount');
+
+      let data;
+      let polygonLayers = [];
+
+      try {
+        const response = await fetch('kml/get_quilombos.php');
+        data = await response.json();
+
+        // Ordenar os dados por município e comunidade
+        data.sort((a, b) => {
+          const municipioA = a.properties.nm_municip.toLowerCase();
+          const municipioB = b.properties.nm_municip.toLowerCase();
+          const comunidadeA = a.properties.nm_comunid.toLowerCase();
+          const comunidadeB = b.properties.nm_comunid.toLowerCase();
+
+          if (municipioA === municipioB) {
+            return comunidadeA.localeCompare(comunidadeB);
+          }
+
+          return municipioA.localeCompare(municipioB);
+        });
+
+        updateRecordCount(); // Atualiza a contagem inicial de registros
+
+        data.forEach(polygon => {
+          const type = polygon.properties.tipo;
+
+          if (!typeLayerGroups[type]) {
+            typeLayerGroups[type] = L.layerGroup();
+            layerControl.addOverlay(typeLayerGroups[type], type);
+          }
+
+          const borderColor = polygon.properties.borderColor || 'blue';
+          const fillColor = polygon.properties.fillColor || 'green';
+          const polygonStyle = {
+            color: borderColor,
+            fillColor: fillColor,
+            fillOpacity: 0.4,
+            weight: 2
+          };
+
+          const popupContent = `
+            Município: ${polygon.properties.nm_municip}<br>
+            Comunidade: ${polygon.properties.nm_comunid}<br>
+            Tipo: ${polygon.properties.tipo}
+          `;
+
+          const polygonLayer = L.geoJSON(polygon, {
+            style: polygonStyle,
+            onEachFeature: function(feature, layer) {
+              layer.bindPopup(popupContent);
+            }
+          });
+
+          polygonLayers.push(polygonLayer);
+          typeLayerGroups[type].addLayer(polygonLayer);
+
+          // Adicionar o município e a comunidade à lista
+          const municipio = polygon.properties.nm_municip;
+          const comunidade = polygon.properties.nm_comunid;
+          const listItem = document.createElement('li');
+          listItem.textContent = `${municipio} - ${comunidade}`;
+          municipioList.appendChild(listItem);
+
+          // Adicionar evento de clique para mostrar no mapa
+          listItem.addEventListener('click', () => {
+            map.fitBounds(polygonLayer.getBounds());
+          });
+        });
+
+        const bounds = L.geoJSON(data).getBounds();
+        map.fitBounds(bounds);
+      } catch (error) {
+        console.error('Erro ao carregar os dados:', error);
+      }
+
+      function updateRecordCount() {
+        recordCountElement.textContent = `Quantidade de Registros: ${data.length}`;
+      }
+    });
+  </script>
+</body>
+</html>
