@@ -67,6 +67,8 @@ if ($result) {
                             </div>
                             <div class="card-body">
 
+                            <iframe title="<?php echo $nome ?>" width="100%" height="200" src="<?php echo $link ?>&filterPaneEnabled=false&navContentPaneEnabled=false" frameborder="0" allowFullScreen="false"></iframe>
+
                             <iframe src="http://localhost/dipatri/kml/mapa_gerais/index.html" frameborder="0" class="full-iframe"></iframe>
 
                             </div>
