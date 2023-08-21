@@ -21,7 +21,7 @@ $url_link = 'consultas/get/get_matriculas.php?' . $queryString; // Concatena a s
 </style>
 
 
-<table id="table" data-toggle="table" data-show-export="true" data-show-button-icons="true" data-show-button-text="true" data-pagination="true" data-click-to-select="true"  data-locale="pt-BR"
+<table id="table" data-toggle="table" data-search="true" data-show-export="true" data-show-button-icons="true" data-show-button-text="true" data-pagination="true" data-click-to-select="true"  data-locale="pt-BR"
    data-show-toggle="false" data-show-columns="false" data-export-data-type="all" data-export-file-name="Matriculas" data-url="<?php echo $url_link ?>"
    class="table table-sm table-borderless fs--3 table-striped rounded custom-table">
     <thead>
